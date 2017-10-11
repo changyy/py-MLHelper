@@ -73,4 +73,7 @@ def data_numeric_handler_process(panda_obj,skip_columns=[],target_columns=[],one
 		onehot_encoder = OneHotEncoder(sparse=False,n_values=len(lookup_table[column]))
 		onehot_result = onehot_encoder.fit_transform(panda_obj[column].values.reshape(panda_obj[column].shape[0], 1))
 
+		for index in range(len(lookup_table[column])):
+			panda_obj['OneHotEncode-'+column+'-'+str(index)] = onehot_result[:,index]
+
 	return lookup_table, panda_obj

@@ -51,3 +51,30 @@ def test_feature_engineering():
 	print("Score:", score)
 	assert round(score, 10) == round(0.84210526315, 10)
 
+	#_, handled_dataset = data_numeric_handler_process(dataset.copy(), skip_columns=['class'], onehotencode_columns=['sepal length in cm'], lookup_table={})
+	_, handled_dataset = data_numeric_handler_process(dataset.copy(), skip_columns=['class'], onehotencode_columns=list(set(dataset.columns)), lookup_table={})
+	#print(handled_dataset.columns)
+	assert len(handled_dataset.columns) == 131
+	y = handled_dataset['class']
+	train = handled_dataset.drop(list(set(dataset.columns)), axis=1) 
+	#print(train.columns)
+	assert len(train.columns) == 126
+
+	from sklearn.model_selection import train_test_split
+	X_train, X_test, y_train, y_test = train_test_split(train, y, random_state=0)
+
+	from sklearn.multiclass import OneVsOneClassifier
+	from sklearn.svm import LinearSVC
+	classifier = OneVsOneClassifier(LinearSVC(random_state = 0))
+
+	classifier.fit(X_train, y_train)
+	expected = y_test
+	predicted = classifier.predict(X_test)
+
+	from sklearn import metrics
+	print("Classification report for classifier %s:\n%s\n" % (classifier, metrics.classification_report(expected, predicted)))
+
+	score = classifier.score(X_test, y_test)
+	print("Score:", score)
+	assert round(score, 10) == round(1.0, 10)
+
