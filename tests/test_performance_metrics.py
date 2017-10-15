@@ -32,3 +32,22 @@ def test_get_metric_report_iris_case():
 	report, score = get_metric_report(expected, predicted)
 	assert round(score, 2) == round(classifier.score(X_test, y_test), 2)
 	assert len(report) > 10
+
+def test_get_metric_value():
+	expected =  [1,0,0,1,1,1,1,0]
+	predicted = [1,1,1,0,1,1,1,1]
+	from org.changyy.ml.performance_metrics import get_metric_value
+	precision_score, recall_score, average_precision_score = get_metric_value(expected, predicted, 'macro')
+	#print(precision_score, recall_score, average_precision_score)
+	assert round(0.285714285714, 5) == round(precision_score, 5) 
+	assert round(0.4, 2) == round(recall_score, 2)
+	assert round( 0.582142857143, 5) == round(average_precision_score, 5)
+
+def test_get_roc_report():
+	expected =  [1,0,0,1,1,1,1,0]
+	predicted = [1,1,1,0,1,1,1,1]
+	from org.changyy.ml.performance_metrics import get_metric_roc
+
+	f, t, roc = get_metric_roc(expected, predicted)
+	print(roc)
+	assert round(0.4, 2) == round(roc, 2)

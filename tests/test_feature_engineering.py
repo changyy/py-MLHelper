@@ -38,7 +38,7 @@ def test_feature_engineering_data_numeric_handler_process():
 
 	score = classifier.score(X_test, y_test)
 	print("Score:", score)
-	assert round(score, 10) == round(0.84210526315, 10)
+	assert round(score, 5) == round(0.894736842105, 5)
 
 	#_, handled_dataset = data_numeric_handler_process(dataset.copy(), skip_columns=['class'], onehotencode_columns=['sepal length in cm'], lookup_table={})
 	_, handled_dataset = data_numeric_handler_process(dataset.copy(), skip_columns=['class'], onehotencode_columns=list(set(dataset.columns)), lookup_table={})
@@ -124,4 +124,4 @@ def test_feature_engineering_data_functional_handler_process():
 	score = classifier.score(X_test, y_test)
 	print("Score:", score)
 
-	assert round(score, 10) == round(0.819678172215, 10)
+	assert round(score, 5) == round(0.816361626336, 5)
